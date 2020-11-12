@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import { Bar, Doughnut, HorizontalBar, Line, Pie } from 'react-chartjs-2';
 
 function App() {
+  const [data, setData] = useState({
+    datasets: [
+      {
+        data: [10, 20, 30],
+        backgroundColor: [
+          'rgba(63, 191, 191, 0.5)',
+          'rgba(191, 63, 63, 0.5)',
+          'rgba(244,244, 137)',
+        ],
+      },
+    ],
+    labels: ['Red', 'Yellow', 'Blue'],
+  });
+  const random = () => Math.random() * (1000 - 1) + 1;
+  const handleRandom = () => {
+    const datas = [parseInt(random()), parseInt(random()), parseInt(random())];
+    let item = data;
+    item.datasets[0].data = datas;
+    setData((state) => ({ ...state, ...item }));
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Pie data={data} redraw={true} />
+      <Doughnut data={data} redraw={true} />
+      <Bar data={data} redraw={true} />
+      <HorizontalBar data={data} />
+      <Line data={data} />
+      <button onClick={handleRandom}>New Value</button>
     </div>
   );
 }
